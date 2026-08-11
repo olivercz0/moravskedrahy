@@ -6,7 +6,7 @@
 </head>
 <body>
 <header style="display:flex; align-items:center; gap:20px;">
-  <img src="mdlogo.jpg" alt="Moravské Dráhy" width="250" height="50" style="max-width:250px; height:auto;">
+  <img src="mdlogo.jpg" alt="Moravské Dráhy" width="250" height="50" style="max-width:250px; height:auto; border-radius: 24px;">
   <div>
     <h1><b>Moravské Dráhy</b></h1>
     <link rel="stylesheet" href="something.css">
@@ -19,14 +19,129 @@
     </nav>
   </div>
 </header>
+<section id="credits-section">
+  <h2>Credits</h2>
+  <div id="credits-container" class="credits-container">
+    <p id="credits-loading">loading contributors... (if it dosent show up, please tell regio about it)</p>
+  </div>
+
+  <template id="contributor-template">
+    <div class="contributor">
+      <img class="avatar" src="" alt="avatar">
+      <div class="info">
+        <div class="name"></div>
+        <div class="role"></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+  (function(){
+   const apiUrl = '';
+   const avatarApiRoot = 'https://avatar-cyan.vercel.app';
+
+    const container = document.getElementById('credits-container');
+    const loading = document.getElementById('credits-loading');
+    const template = document.getElementById('contributor-template');
+
+    const sample = [
+      {discordTag: "Regio", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/753210729196290080/smallimage", role: "the owner of this shit", featured: true},
+      {discordTag: "Vortex", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/808338010453442561/smallimage", role: "Co-Owner", featured: true},
+      {discordTag: "BellsOSerbia", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/897469621723095090/smallimage", role: "Head developer", featured: true},
+      {discordTag: "Oliver.CZ0", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/670575036012429342/smallimage", role: "Head moderator and web developer", featured: true},
+      {discordTag: "Zabička", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1067167027967557726/smallimage", role: "Developer (lives in ostrava)", featured: true},
+      {discordTag: "Deskzone", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/608604588857098249/smallimage", role: "Moderator",},
+      {discordTag: "E8221", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/973313547050315837/smallimage", role: "Contributor",},
+      {discordTag: "edenbri67", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1165963457355599922/smallimage", role: "Contributor",},
+      {discordTag: "Marc14", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/723954115302129777/smallimage", role: "Contributor",},
+      {discordTag: "MartinXXCZ29", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/257888524102008832/smallimage", role: "Contributor",},
+      {discordTag: "Maxi677", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/628257695517900800/smallimage", role: "Contributor",},
+      {discordTag: "MeeMBlox_CZ", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1393307483266875402/smallimage", role: "Contributor",},
+      {discordTag: "mihai04", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/751381643725373481/smallimage", role: "Contributor",},
+      {discordTag: "nameyourshake", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/678143793370759188/smallimage", role: "Contributor",},
+      {discordTag: "osinew", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/704310552725553203/smallimage", role: "Contributor",},
+      {discordTag: "NTD", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/618763892390363156/smallimage", role: "Contributor",},
+      {discordTag: "OndraTyCype", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1129841225156010057/smallimage", role: "Contributor",},
+      {discordTag: "Praha2008", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/697410867347849269/smallimage", role: "Contributor",},
+      {discordTag: "Scotishtwin", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/966017956452634694/smallimage", role: "Contributor",},
+      {discordTag: "SquareWave", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/529949685235056651/smallimage", role: "Contributor",},
+      {discordTag: "stinkesokke", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/822762721333477446/smallimage", role: "Contributor",},
+      {discordTag: "Petass", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1212053120532611163/smallimage", role: "Contributor",},
+      {discordTag: "V600", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1197258324094222460/smallimage", role: "Contributor",},
+ ];
+
+    function render(list){
+      container.innerHTML = '';
+      if(!list || !list.length){ container.innerHTML = '<p>No contributors found.</p>'; return; }
+      const ordered = list.slice().sort((a, b) => {
+        const fa = a.featured || String(a.discordTag).toLowerCase() === 'thinkmoravia';
+        const fb = b.featured || String(b.discordTag).toLowerCase() === 'thinkmoravia';
+        return (fa === fb) ? 0 : fa ? -1 : 1;
+      });
+      ordered.forEach(c=>{
+        const el = template.content.cloneNode(true);
+        const card = el.querySelector('.contributor');
+        const avatarFromApi = c.userId ? (avatarApiRoot + '/api/pfp/' + encodeURIComponent(c.userId) + '/smallimage') : null;
+        if(c.featured || String(c.discordTag).toLowerCase() === 'thinkmoravia'){
+          card.classList.add('featured');
+        }
+        el.querySelector('.avatar').src = c.avatarUrl || avatarFromApi || '';
+        el.querySelector('.avatar').alt = c.discordTag || 'avatar';
+        el.querySelector('.name').textContent = c.discordTag || c.username || 'Unknown';
+        el.querySelector('.role').textContent = c.role || c.description || '';
+        container.appendChild(el);
+      });
+    }
+
+    if(!apiUrl){
+      loading.textContent = 'Using sample data — paste your API URL into the script.';
+      render(sample);
+      return;
+    }
+
+    fetch(apiUrl).then(r=>{
+      if(!r.ok) throw new Error('Network response not ok');
+      return r.json();
+    }).then(async data=>{
+      const list = Array.isArray(data) ? data : [];
+      const ids = list.map(x => x.userId || x.id).filter(Boolean).map(String);
+      if(ids.length){
+        try{
+          const batchUrl = avatarApiRoot + '/api/batch?ids=' + encodeURIComponent(ids.join('|'));
+          const br = await fetch(batchUrl);
+          if(br.ok){
+            const bj = await br.json();
+            if(bj && Array.isArray(bj.users)){
+              const map = new Map(bj.users.map(u=>[String(u.id), u]));
+              list.forEach(item=>{
+                const id = String(item.userId || item.id || '');
+                if(map.has(id)){
+                  const u = map.get(id);
+                  if(u && u.avatarUrl) item.avatarUrl = u.avatarUrl;
+                }
+              });
+            }
+          }
+        }catch(e){ console.error('Batch avatar lookup failed', e); }
+      }
+      render(list);
+    }).catch(err=>{
+      loading.textContent = 'Failed to load contributors; showing sample data.';
+      render(sample);
+      console.error(err);
+    });
+  })();
+
+  </script>
+
+</section>
+
 <h1 style="font-size: 60px;">COMING SOON.</h1>
 <h4>i hope.... who knows</h4>
 <h6> beg regio to finish the credits so that he can send it to oliver (the web developer) </h6>
 
 <section id="contact">
   <h2>Contact and Socials</h2>
-  <p>roblox game: <a href="https://www.roblox.com/games/6336588984/MD">Moravské Dráhy</a></p>
-  <p>roblox group: <a href="https://www.roblox.com/communities/33706575/Moravsk-Dr-hy">Moravské Dráhy</a></p>
   <p>discord: <a href="https://discord.gg/m3h28SSRTA">m3h28SSRTA</a></p>
   <p>tiktok: <a href="https://www.tiktok.com/@cersv4andmd">@cersv4andmd</a></p>
   <p>youtube: <a href="https://www.youtube.com/@moravskedrahy">@moravskedrahy</a></p>
