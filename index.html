@@ -1,11 +1,18 @@
 <html>
 <head>
+  <meta name="google-site-verification" content="UVEppPI0bvwnKwZtwMRnI6UIY2-fKCq_M6rcYeSz15k" />
   <link rel="icon" href="mdlogo.jpg">
     <title>Moravské Dráhy</title>
     <script src="https://u.widget.st/ar.js"></script>
    
 </head>
 <body>
+<div class="preloader" aria-live="polite" aria-busy="true">
+  <div>
+    <div class="preloader__spinner"></div>
+    <div class="preloader__label">the site is loading, OK MATE?</div>
+  </div>
+</div>
 <header style="display:flex; align-items:center; gap:20px;">
   <img src="mdlogo.jpg" alt="Moravské Dráhy" width="250" height="50" style="max-width:250px; height:auto; border-radius: 24px;">
   <div>
@@ -33,6 +40,42 @@
 </section>
 <ws-widget type="hc" iid="4281"></ws-widget>
 <h6> copyright © 2026 Moravské Dráhy </h6>
-<h6> created by: <a href="https://www.olivercz0.xyz">Oliver.CZ0 <3 </a> </h6>
-</body>
+<h6> created by: <a href="https://www.olivercz0.xyz">Oliver.CZ0 <3 </a> </h6><script>
+  (function () {
+    const imageUrls = [
+      'mdlogo.jpg',
+      'imagemd1.png',
+      '67md.png',
+      'image267.png',
+      '68md.png',
+      '7t5s4vx.png',
+      '69md.png',
+      'imagemd2.png',
+      'md70.png',
+      '0r4kpxm.png',
+      'Screenshot_414.png'
+    ];
+
+    const preloadImage = (src) => new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+
+    const revealPage = () => {
+      document.body.classList.add('page-ready');
+    };
+
+    Promise.all(imageUrls.map(preloadImage)).then(() => {
+      revealPage();
+    }).catch(() => {
+      revealPage();
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(revealPage, 300);
+    }, { once: true });
+  })();
+</script></body>
 </html>       

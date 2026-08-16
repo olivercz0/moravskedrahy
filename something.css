@@ -18,6 +18,10 @@
       }
       nav a:hover { background: rgba(15, 23, 42, 0.08); }
 
+html {
+  background: #0f172a;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -31,6 +35,51 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+body.page-ready {
+  opacity: 1;
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: #ffd21f;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+body.page-ready .preloader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader__spinner {
+  width: 64px;
+  height: 64px;
+  border: 4px solid rgba(255, 190, 0, 0.25);
+  border-top-color: #c01001;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+.preloader__label {
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 a,
@@ -43,57 +92,112 @@ a:active {
 }
 
 @keyframes backgroundCycle {
-  0%, 18% {
+  0%, 9% {
     opacity: 1;
-    background: url("imagemd1.png") center/cover no-repeat;
+    background-image: url("imagemd1.png");
   }
-  20%, 20.0001% {
-    opacity: 1;
-    background: url("image267.png") center/cover no-repeat;
+  10%, 19% {
+    opacity: 0;
+    background-image: url("67md.png");
   }
-  20.0001%, 38% {
+  20%, 29% {
     opacity: 1;
-    background: url("image267.png") center/cover no-repeat;
+    background-image: url("image267.png");
   }
-  40%, 40.0001% {
-    opacity: 1;
-    background: url("7t5s4vx.png") center/cover no-repeat;
+  30%, 39% {
+    opacity: 0;
+    background-image: url("68md.png");
   }
-  40.0001%, 58% {
+  40%, 49% {
     opacity: 1;
-    background: url("7t5s4vx.png") center/cover no-repeat;
+    background-image: url("7t5s4vx.png");
   }
-  60%, 60.0001% {
-    opacity: 1;
-    background: url("imagemd2.png") center/cover no-repeat;
+  50%, 59% {
+    opacity: 0;
+    background-image: url("69md.png");
   }
-  60.0001%, 78% {
+  60%, 69% {
     opacity: 1;
-    background: url("imagemd2.png") center/cover no-repeat;
+    background-image: url("imagemd2.png");
   }
-  80%, 80.0001% {
-    opacity: 1;
-    background: url("0r4kpxm.png") center/cover no-repeat;
+  70%, 79% {
+    opacity: 0;
+    background-image: url("md70.png");
   }
-  80.0001%, 98% {
+  80%, 89% {
     opacity: 1;
-    background: url("0r4kpxm.png") center/cover no-repeat;
+    background-image: url("0r4kpxm.png");
   }
-  100% {
-    opacity: 1;
-    background: url("imagemd1.png") center/cover no-repeat;
+  90%, 100% {
+    opacity: 0;
+    background-image: url("Screenshot_414.png");
   }
 }
 
-body::before {
+@keyframes backgroundCycleAlt {
+  0%, 9% {
+    opacity: 0;
+    background-image: url("imagemd1.png");
+  }
+  10%, 19% {
+    opacity: 1;
+    background-image: url("67md.png");
+  }
+  20%, 29% {
+    opacity: 0;
+    background-image: url("image267.png");
+  }
+  30%, 39% {
+    opacity: 1;
+    background-image: url("68md.png");
+  }
+  40%, 49% {
+    opacity: 0;
+    background-image: url("7t5s4vx.png");
+  }
+  50%, 59% {
+    opacity: 1;
+    background-image: url("69md.png");
+  }
+  60%, 69% {
+    opacity: 0;
+    background-image: url("imagemd2.png");
+  }
+  70%, 79% {
+    opacity: 1;
+    background-image: url("md70.png");
+  }
+  80%, 89% {
+    opacity: 0;
+    background-image: url("0r4kpxm.png");
+  }
+  90%, 100% {
+    opacity: 1;
+    background-image: url("Screenshot_414.png");
+  }
+}
+
+body::before,
+body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("imagemd1.png") center/cover no-repeat;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   background-blend-mode: overlay;
   filter: blur(12px);
   z-index: -1;
-  animation: backgroundCycle 25s infinite;
+}
+
+body::before {
+  background-image: url("imagemd1.png");
+  animation: backgroundCycle 50s infinite ease-in-out;
+}
+
+body::after {
+  background-image: url("67md.png");
+  animation: backgroundCycleAlt 50s infinite ease-in-out;
 }
 
 #credits-section { padding: 28px; max-width: 980px; margin: 20px auto; background: rgba(0,0,0,0.35); border-radius:12px; }
