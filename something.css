@@ -91,113 +91,21 @@ a:active {
   text-decoration: none;
 }
 
-@keyframes backgroundCycle {
-  0%, 9% {
-    opacity: 1;
-    background-image: url("imagemd1.png");
-  }
-  10%, 19% {
-    opacity: 0;
-    background-image: url("67md.png");
-  }
-  20%, 29% {
-    opacity: 1;
-    background-image: url("image267.png");
-  }
-  30%, 39% {
-    opacity: 0;
-    background-image: url("68md.png");
-  }
-  40%, 49% {
-    opacity: 1;
-    background-image: url("7t5s4vx.png");
-  }
-  50%, 59% {
-    opacity: 0;
-    background-image: url("69md.png");
-  }
-  60%, 69% {
-    opacity: 1;
-    background-image: url("imagemd2.png");
-  }
-  70%, 79% {
-    opacity: 0;
-    background-image: url("md70.png");
-  }
-  80%, 89% {
-    opacity: 1;
-    background-image: url("0r4kpxm.png");
-  }
-  90%, 100% {
-    opacity: 0;
-    background-image: url("Screenshot_414.png");
-  }
-}
-
-@keyframes backgroundCycleAlt {
-  0%, 9% {
-    opacity: 0;
-    background-image: url("imagemd1.png");
-  }
-  10%, 19% {
-    opacity: 1;
-    background-image: url("67md.png");
-  }
-  20%, 29% {
-    opacity: 0;
-    background-image: url("image267.png");
-  }
-  30%, 39% {
-    opacity: 1;
-    background-image: url("68md.png");
-  }
-  40%, 49% {
-    opacity: 0;
-    background-image: url("7t5s4vx.png");
-  }
-  50%, 59% {
-    opacity: 1;
-    background-image: url("69md.png");
-  }
-  60%, 69% {
-    opacity: 0;
-    background-image: url("imagemd2.png");
-  }
-  70%, 79% {
-    opacity: 1;
-    background-image: url("md70.png");
-  }
-  80%, 89% {
-    opacity: 0;
-    background-image: url("0r4kpxm.png");
-  }
-  90%, 100% {
-    opacity: 1;
-    background-image: url("Screenshot_414.png");
-  }
-}
-
-body::before,
-body::after {
-  content: "";
+.background-layer {
   position: fixed;
   inset: 0;
+  z-index: -1;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-blend-mode: overlay;
   filter: blur(12px);
-  z-index: -1;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  background-blend-mode: overlay;
 }
 
-body::before {
-  background-image: url("imagemd1.png");
-  animation: backgroundCycle 50s infinite ease-in-out;
-}
-
-body::after {
-  background-image: url("67md.png");
-  animation: backgroundCycleAlt 50s infinite ease-in-out;
+.background-layer.active {
+  opacity: 1;
 }
 
 #credits-section { padding: 28px; max-width: 980px; margin: 20px auto; background: rgba(0,0,0,0.35); border-radius:12px; }

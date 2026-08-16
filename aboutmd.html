@@ -57,6 +57,8 @@
     </style>
 </head>
 <body>
+<div id="bg-layer-1" class="background-layer active"></div>
+<div id="bg-layer-2" class="background-layer"></div>
 <div class="preloader" aria-live="polite" aria-busy="true">
   <div>
     <div class="preloader__spinner"></div>
@@ -144,9 +146,7 @@
 <h6> copyright © 2026 Moravské Dráhy </h6>
 <h6> created by: <a href="https://www.olivercz0.xyz">Oliver.CZ0 <3 </a> </h6><script>
   (function () {
-    const imageUrls = [
-      'mdlogo.jpg',
-      'aha.png',
+    const slideshow = [
       'imagemd1.png',
       '67md.png',
       'image267.png',
@@ -159,10 +159,18 @@
       'Screenshot_414.png'
     ];
 
+    const pageImages = [
+      'mdlogo.jpg',
+      'aha.png',
+      'gorbus.png'
+    ].concat(Array.from(document.querySelectorAll('img[src]')).map((img) => img.getAttribute('src')));
+
+    const imageUrls = Array.from(new Set(pageImages.concat(slideshow).filter(Boolean)));
+
     const preloadImage = (src) => new Promise((resolve) => {
       const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
+      img.onload = resolve;
+      img.onerror = resolve;
       img.src = src;
     });
 
@@ -170,15 +178,47 @@
       document.body.classList.add('page-ready');
     };
 
+    const layer1 = document.getElementById('bg-layer-1');
+    const layer2 = document.getElementById('bg-layer-2');
+    let currentIndex = 0;
+    let activeLayer = 1;
+
+    function setBackgroundLayer(layer, src) {
+      if (!layer) return;
+      layer.style.backgroundImage = 'url("' + src + '")';
+    }
+
+    function cycleBackground() {
+      if (!layer1 || !layer2 || !slideshow.length) return;
+      const nextIndex = (currentIndex + 1) % slideshow.length;
+      const nextLayer = activeLayer === 1 ? layer2 : layer1;
+      const activeLayerEl = activeLayer === 1 ? layer1 : layer2;
+
+      currentIndex = nextIndex;
+      setBackgroundLayer(nextLayer, slideshow[currentIndex]);
+      nextLayer.classList.add('active');
+      activeLayerEl.classList.remove('active');
+      activeLayer = activeLayer === 1 ? 2 : 1;
+    }
+
+    if (layer1 && layer2) {
+      setBackgroundLayer(layer1, slideshow[0]);
+      setBackgroundLayer(layer2, slideshow[1] || slideshow[0]);
+      layer1.classList.add('active');
+    }
+
     Promise.all(imageUrls.map(preloadImage)).then(() => {
       revealPage();
+      if (layer1 && layer2) {
+        setInterval(cycleBackground, 5000);
+      }
     }).catch(() => {
       revealPage();
+      if (layer1 && layer2) {
+        setInterval(cycleBackground, 5000);
+      }
     });
-
-    window.addEventListener('load', () => {
-      setTimeout(revealPage, 300);
-    }, { once: true });
   })();
-</script></body>
+</script>
+</body>
 </html>       
