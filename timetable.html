@@ -1,0 +1,211 @@
+<html>
+<head>
+  <link rel="icon" href="mdlogo.jpg">
+  <link rel="stylesheet" href="something.css">
+  <title>Moravské Dráhy</title>
+  <meta http-equiv="Cache-Control" content="public, max-age=3600, s-maxage=86400">
+  <meta http-equiv="Pragma" content="cache">
+  <meta http-equiv="Expires" content="Wed, 18 Aug 2027 00:00:00 GMT">
+  <style>
+    #timetable {
+      padding: 28px;
+      max-width: 980px;
+      margin: 20px auto;
+      background: rgba(0,0,0,0.35);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+<div id="bg-layer-1" class="background-layer active"></div>
+<div id="bg-layer-2" class="background-layer"></div>
+<header style="display:flex; align-items:center; gap:20px;">
+  <img src="mdlogo.jpg" alt="Moravské Dráhy" width="250" height="50" style="max-width:250px; height:auto; border-radius: 24px;">
+  <div>
+    <h1><b>Moravské Dráhy</b></h1>
+    <nav>
+      <ul>
+          <a href="index.html">home</a>
+          <a href="aboutmd.html">about MD</a>
+          <a href="credits.html">credits</a>
+          <a href="timetable.html">timetable</a>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<section id="timetable" style="padding: 28px; max-width: 980px; margin: 20px auto; background: rgba(0,0,0,0.35); border-radius:12px; text-align: center;">
+  <h2>Timetable</h2>
+
+  <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin: 12px 0 20px; flex-wrap: wrap;">
+    <button id="prev-page" type="button" style="padding: 8px 14px; border: none; border-radius: 8px; background: #ffbe00; color: #0f172a; cursor: pointer;">Previous</button>
+    <span id="page-info" style="color: #ffbe00; font-weight: 700;">Loading PDF...</span>
+    <button id="next-page" type="button" style="padding: 8px 14px; border: none; border-radius: 8px; background: #ffbe00; color: #0f172a; cursor: pointer;">Next</button>
+  </div>
+
+  <div style="display: flex; justify-content: center; width: 100%; overflow: auto; padding: 8px 0;">
+    <canvas id="pdf-canvas" style="max-width: 100%; border-radius: 12px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.35);"></canvas>
+  </div>
+
+  <p style="margin-top: 16px;">
+    <a href="MDtimeTable%20(2)%20(1).pdf" download style="display: inline-block; padding: 10px 18px; background: #ffbe00; color: #0f172a; border-radius: 10px; font-weight: 700; text-decoration: none;">Download PDF</a>
+  </p>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  const pdfUrl = 'MDtimeTable%20(2)%20(1).pdf';
+  const canvas = document.getElementById('pdf-canvas');
+  const ctx = canvas.getContext('2d');
+  const pageInfo = document.getElementById('page-info');
+  const prevButton = document.getElementById('prev-page');
+  const nextButton = document.getElementById('next-page');
+
+  let pdfDoc = null;
+  let pageNum = 1;
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  function renderPage(num) {
+    if (!pdfDoc) return;
+
+    pdfDoc.getPage(num).then((page) => {
+      const viewport = page.getViewport({ scale: 1.15 });
+      const ratio = window.devicePixelRatio || 1;
+
+      canvas.width = Math.floor(viewport.width * ratio);
+      canvas.height = Math.floor(viewport.height * ratio);
+      canvas.style.width = `${viewport.width}px`;
+      canvas.style.height = `${viewport.height}px`;
+
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const renderContext = {
+        canvasContext: ctx,
+        viewport: viewport
+      };
+
+      page.render(renderContext).promise.then(() => {
+        pageInfo.textContent = `Page ${num} / ${pdfDoc.numPages}`;
+        prevButton.disabled = num <= 1;
+        nextButton.disabled = num >= pdfDoc.numPages;
+      });
+    }).catch(() => {
+      pageInfo.textContent = 'Unable to render this PDF in-browser.';
+    });
+  }
+
+  prevButton.addEventListener('click', () => {
+    if (pageNum <= 1) return;
+    pageNum -= 1;
+    renderPage(pageNum);
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+    pageNum += 1;
+    renderPage(pageNum);
+  });
+
+  fetch(pdfUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('PDF could not be loaded');
+      }
+      return response.arrayBuffer();
+    })
+    .then((buffer) => pdfjsLib.getDocument({ data: buffer }).promise)
+    .then((doc) => {
+      pdfDoc = doc;
+      renderPage(pageNum);
+    })
+    .catch(() => {
+      pageInfo.textContent = 'PDF viewer failed to load. Please use the download link above.';
+      prevButton.disabled = true;
+      nextButton.disabled = true;
+    });
+</script>
+
+<section id="contact">
+  <h2>Contact and Socials</h2>
+  <p>roblox game: <a href="https://www.roblox.com/games/6336588984/MD">Moravské Dráhy</a></p>
+  <p>roblox group: <a href="https://www.roblox.com/communities/33706575">Moravské Dráhy</a></p>
+  <p>discord: <a href="https://discord.gg/m3h28SSRTA">m3h28SSRTA</a></p>
+  <p>tiktok: <a href="https://www.tiktok.com/@cersv4andmd">@cersv4andmd</a></p>
+  <p>youtube: <a href="https://www.youtube.com/@moravskedrahy">@moravskedrahy</a></p>
+  <p>aukro (merch): <a href="https://aukro.cz/uzivatel/mdeshop">@mdeshop</a></p>
+</section>
+<h6> copyright © 2026 Moravské Dráhy </h6>
+<h6> created by: <a href="https://www.olivercz0.xyz">Oliver.CZ0 <3 </a> </h6>
+<script>
+  (function () {
+    const slideshow = [
+      'imagemd1.png',
+      '67md.png',
+      'image267.png',
+      '68md.png',
+      '7t5s4vx.png',
+      '69md.png',
+      'imagemd2.png',
+      'md70.png',
+      '0r4kpxm.png',
+      'Screenshot_414.png'
+    ];
+
+    const pageImages = [
+      'mdlogo.jpg'
+    ].concat(Array.from(document.querySelectorAll('img[src]')).map((img) => img.getAttribute('src')));
+
+    const imageUrls = Array.from(new Set(pageImages.concat(slideshow).filter(Boolean)));
+
+    const preloadImage = (src) => new Promise((resolve) => {
+      const img = new Image();
+      img.onload = resolve;
+      img.onerror = resolve;
+      img.src = src;
+    });
+
+    const layer1 = document.getElementById('bg-layer-1');
+    const layer2 = document.getElementById('bg-layer-2');
+    let currentIndex = 0;
+    let activeLayer = 1;
+
+    function setBackgroundLayer(layer, src) {
+      if (!layer) return;
+      layer.style.backgroundImage = 'url("' + src + '")';
+    }
+
+    function cycleBackground() {
+      if (!layer1 || !layer2 || !slideshow.length) return;
+      const nextIndex = (currentIndex + 1) % slideshow.length;
+      const nextLayer = activeLayer === 1 ? layer2 : layer1;
+      const activeLayerEl = activeLayer === 1 ? layer1 : layer2;
+
+      currentIndex = nextIndex;
+      setBackgroundLayer(nextLayer, slideshow[currentIndex]);
+      nextLayer.classList.add('active');
+      activeLayerEl.classList.remove('active');
+      activeLayer = activeLayer === 1 ? 2 : 1;
+    }
+
+    if (layer1 && layer2) {
+      setBackgroundLayer(layer1, slideshow[0]);
+      setBackgroundLayer(layer2, slideshow[1] || slideshow[0]);
+      layer1.classList.add('active');
+    }
+
+    Promise.all(imageUrls.map(preloadImage)).then(() => {
+      if (layer1 && layer2) {
+        setInterval(cycleBackground, 5000);
+      }
+    }).catch(() => {
+      if (layer1 && layer2) {
+        setInterval(cycleBackground, 5000);
+      }
+    });
+  })();
+</script>
+</body>
+</html>       
