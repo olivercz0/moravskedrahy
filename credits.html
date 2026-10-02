@@ -81,11 +81,9 @@
     function render(list){
       container.innerHTML = '';
       if(!list || !list.length){ container.innerHTML = '<p>No contributors found.</p>'; return; }
-      const ordered = list.slice().sort((a, b) => {
-        const fa = a.featured || String(a.discordTag).toLowerCase() === 'thinkmoravia';
-        const fb = b.featured || String(b.discordTag).toLowerCase() === 'thinkmoravia';
-        return (fa === fb) ? 0 : fa ? -1 : 1;
-      });
+      const featured = list.filter(c => c.featured || String(c.discordTag).toLowerCase() === 'thinkmoravia');
+      const normal = list.filter(c => !(c.featured || String(c.discordTag).toLowerCase() === 'thinkmoravia'));
+      const ordered = [...featured, ...normal];
       ordered.forEach(c=>{
         const el = template.content.cloneNode(true);
         const card = el.querySelector('.contributor');
