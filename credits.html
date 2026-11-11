@@ -22,8 +22,9 @@
           <a href="index.html">home</a>
           <a href="aboutmd.html">about MD</a>
           <a href="timetable.html">timetable</a>
+          <a href="cersv4.html">cers v4</a>
           <a href="credits.html">credits</a>
-       </ul>
+      </ul>
     </nav>
   </div>
 </header>
@@ -55,8 +56,8 @@
     const sample = [
       {discordTag: "Regio", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/753210729196290080/smallimage", role: "the owner of this shit", featured: true},
       {discordTag: "BellsOSerbia", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/897469621723095090/smallimage", role: "Head developer", featured: true},
-      {discordTag: "Zabička", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1067167027967557726/smallimage", role: "Developer", featured: true},
       {discordTag: "Oliver.CZ0", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/670575036012429342/smallimage", role: "Head moderator and web developer", featured: true},
+      {discordTag: "Zabička", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1067167027967557726/smallimage", role: "Developer", featured: true},
       {discordTag: "Deskzone", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/608604588857098249/smallimage", role: "Moderator",},
       {discordTag: "E8221", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/973313547050315837/smallimage", role: "Contributor",},
       {discordTag: "edenbri67", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1165963457355599922/smallimage", role: "Contributor",},
@@ -65,6 +66,7 @@
       {discordTag: "Maxi677", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/628257695517900800/smallimage", role: "Contributor",},
       {discordTag: "MeeMBlox_CZ", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1393307483266875402/smallimage", role: "Contributor",},
       {discordTag: "mihai04", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/751381643725373481/smallimage", role: "Contributor",},
+      {discordTag: "Vortex", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/808338010453442561/smallimage", role: "Contributor",},
       {discordTag: "nameyourshake", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/678143793370759188/smallimage", role: "Contributor",},
       {discordTag: "osinew", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/704310552725553203/smallimage", role: "Contributor",},
       {discordTag: "NTD", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/618763892390363156/smallimage", role: "Contributor",},
@@ -74,16 +76,17 @@
       {discordTag: "SquareWave", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/529949685235056651/smallimage", role: "Contributor",},
       {discordTag: "stinkesokke", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/822762721333477446/smallimage", role: "Contributor",},
       {discordTag: "Petass", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/1212053120532611163/smallimage", role: "Contributor",},
-      {discordTag: "Vortex", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/808338010453442561/smallimage", role: "Contributor",},
       {discordTag: "Vrtulka103", avatarUrl: "https://avatar-cyan.vercel.app/api/pfp/794275877209767967/smallimage", role: "Contributor",},
  ];
 
     function render(list){
       container.innerHTML = '';
       if(!list || !list.length){ container.innerHTML = '<p>No contributors found.</p>'; return; }
-      const featured = list.filter(c => c.featured || String(c.discordTag).toLowerCase() === 'thinkmoravia');
-      const normal = list.filter(c => !(c.featured || String(c.discordTag).toLowerCase() === 'thinkmoravia'));
-      const ordered = [...featured, ...normal];
+      const ordered = list.slice().sort((a, b) => {
+        const fa = a.featured || String(a.discordTag).toLowerCase() === 'thinkmoravia';
+        const fb = b.featured || String(b.discordTag).toLowerCase() === 'thinkmoravia';
+        return (fa === fb) ? 0 : fa ? -1 : 1;
+      });
       ordered.forEach(c=>{
         const el = template.content.cloneNode(true);
         const card = el.querySelector('.contributor');
@@ -149,7 +152,7 @@
   <p>roblox game: <a href="https://www.roblox.com/games/6336588984/MD">Moravské Dráhy</a></p>
   <p>roblox group: <a href="https://www.roblox.com/communities/33706575">Moravské Dráhy</a></p>
   <p>discord: <a href="https://discord.gg/m3h28SSRTA">m3h28SSRTA</a></p>
-  <p>tiktok: <a href="https://www.tiktok.com/@cersv4andmd">@cersv4andmd</a></p>
+  <p>tiktok: <a href="https://www.tiktok.com/@moravskedrahy">@moravskedrahy</a></p>
   <p>youtube: <a href="https://www.youtube.com/@moravskedrahy">@moravskedrahy</a></p>
   <p>aukro (merch): <a href="https://aukro.cz/uzivatel/mdeshop">@mdeshop</a></p>
 
@@ -222,4 +225,4 @@
     });
   })();
 </script></body>
-</html>
+</html>       
